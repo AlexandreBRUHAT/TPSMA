@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4a47bcdf-8078-4b71-b556-b8577c5461c5" name="Default Changelist" comment="" />
+    <list default="true" id="4a47bcdf-8078-4b71-b556-b8577c5461c5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TP1/fr/polytech/sma/Agent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TP1/fr/polytech/sma/Agent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TP1/fr/polytech/sma/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TP1/fr/polytech/sma/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/TP1/fr/polytech/sma/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/TP1/fr/polytech/sma/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/polytech/sma/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/polytech/sma/Agent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/polytech/sma/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/polytech/sma/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fr/polytech/sma/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fr/polytech/sma/Message.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +22,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1UQtA1y3dPt6wHQCdkC5t3DzCPD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -66,14 +78,18 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="801" y="264" width="374" height="577" key="#com.intellij.ide.util.MemberChooser" timestamp="1576662589220">
+    <state x="801" y="264" width="374" height="577" key="#com.intellij.ide.util.MemberChooser" timestamp="1576664817271">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="801" y="264" width="374" height="577" key="#com.intellij.ide.util.MemberChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1576662589220" />
+    <state x="801" y="264" width="374" height="577" key="#com.intellij.ide.util.MemberChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1576664817271" />
     <state x="845" y="256" width="678" height="593" key="#xdebugger.evaluate" timestamp="1576661869633">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="845" y="256" width="678" height="593" key="#xdebugger.evaluate/67.27.1853.1053@67.27.1853.1053" timestamp="1576661869633" />
+    <state x="600" y="149" width="777" height="807" key="CommitChangelistDialog2" timestamp="1577091825119">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="600" y="149" width="777" height="807" key="CommitChangelistDialog2/67.27.1853.1053@67.27.1853.1053" timestamp="1577091825119" />
     <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1576049095903">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
@@ -94,22 +110,22 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state width="1807" height="344" key="GridCell.Tab.-1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1576504322973" />
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom" timestamp="1576663170689">
+    <state width="1807" height="344" key="GridCell.Tab.0.bottom" timestamp="1576666752926">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1576663170689" />
-    <state width="1807" height="278" key="GridCell.Tab.0.center" timestamp="1576663170688">
+    <state width="1807" height="344" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1576666752926" />
+    <state width="1807" height="344" key="GridCell.Tab.0.center" timestamp="1576666752926">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1576663170688" />
-    <state width="1807" height="278" key="GridCell.Tab.0.left" timestamp="1576663170688">
+    <state width="1807" height="344" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1576666752926" />
+    <state width="1807" height="344" key="GridCell.Tab.0.left" timestamp="1576666752925">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1576663170688" />
-    <state width="1807" height="278" key="GridCell.Tab.0.right" timestamp="1576663170689">
+    <state width="1807" height="344" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1576666752925" />
+    <state width="1807" height="344" key="GridCell.Tab.0.right" timestamp="1576666752926">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1576663170689" />
+    <state width="1807" height="344" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1576666752926" />
     <state width="1807" height="344" key="GridCell.Tab.1.bottom" timestamp="1576504306136">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
@@ -136,23 +152,23 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/fr/polytech/sma/Agent.java</url>
-          <line>132</line>
+          <line>148</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/fr/polytech/sma/Agent.java</url>
-          <line>113</line>
+          <line>124</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/fr/polytech/sma/Agent.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="32" />
+          <line>121</line>
+          <option name="timeStamp" value="33" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/fr/polytech/sma/Agent.java</url>
-          <line>112</line>
-          <option name="timeStamp" value="33" />
+          <line>73</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

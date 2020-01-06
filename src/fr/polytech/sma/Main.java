@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
 
-    public static int nbAgent = 8;
+    public static int nbAgent = 6;
     public static int gridSize = 5;
 
     public static void main(String[] args){
@@ -20,6 +20,5 @@ public class Main {
         for(Agent agent: agents) {
             agent.start();
         };
-
     }
 }

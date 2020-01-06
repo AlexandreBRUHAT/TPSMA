@@ -1,5 +1,6 @@
 package fr.polytech.sma;
 
+import javafx.util.Pair;
 import org.omg.CORBA.portable.IndirectionException;
 
 import java.util.Random;
@@ -14,7 +15,7 @@ public class Agent extends Thread {
 
     private int id;
 
-    private boolean waitingForMovement;
+    private boolean waitingForAnswer;
 
 
     private Grille sharedGrille;
@@ -29,7 +30,7 @@ public class Agent extends Thread {
 
         this.id = id;
 
-        waitingForMovement = false;
+        waitingForAnswer = false;
 
         sharedGrille = Grille.getInstance();
         boiteAuxLettres = BoiteAuxLettres.getInstance();
@@ -47,24 +48,32 @@ public class Agent extends Thread {
             // Communication -> Décision -> Déplacement
             direction = null;
             Message message = boiteAuxLettres.lireMsg(id);
+            int propagation = 0;
 
             if (message != null) {
                 // If message read it
-                direction = interpMessage(message);
+                Pair<Dir, Integer> pair = interpMessage(message);
+
+                if(pair != null) {
+                    direction = pair.getKey();
+                    propagation = pair.getValue();
+                }
 
             } else {
                 // Else chose your own dir
                 direction = choseDir();
             }
 
-            if(direction != null) {
-                // Move if you want to
-                move(direction);
-                // You moved so you're not waiting anymore and you can send new messages without spamming for nothing
-                waitingForMovement  = false;
+            // Command other / propagate
+            if (direction != null) {
+                direction = commandIfNeeded(direction, propagation);
             }
 
-            sharedGrille.afficherGrille();
+            // Move if you want to
+            if(direction != null) {
+                move(direction);
+                // You moved so you're not waiting anymore and you can send new messages without spamming for nothing
+            }
         }
 
         System.out.println("NB coups = " + sharedGrille.getCoups());
@@ -109,9 +118,16 @@ public class Agent extends Thread {
 
      */
 
-    public Dir interpMessage(Message msg) {
-        if (msg.getPerformatif().equals("REQUEST") && msg.getAction().equals("MOVE"))
-            return randomDir();
+    public Pair<Dir, Integer> interpMessage(Message msg) {
+        if (msg.getPerformatif().equals("REQUEST") && msg.getAction().equals("MOVE") && msg.getPropagation() < 5) {
+            boiteAuxLettres.envoyerMsg(msg.getId(),
+                    new Message("ANSWER", "MOVE", id, 0));
+            return new Pair<>(randomDir(), msg.getPropagation());
+        }
+        else if (msg.getPerformatif().equals("ANSWER")) {
+            waitingForAnswer  = false;
+            return null;
+        }
         else return null;
     }
 
@@ -139,25 +155,33 @@ public class Agent extends Thread {
         if (isArrived()) {
             direction = null;
         } else {
-            int distX = Math.abs(X - xEnd);
-            int distY = Math.abs(Y - yEnd);
 
-            if (distX > distY) {
-                direction = (X - xEnd < 0 ? Dir.BOT : Dir.TOP);
-            } else {
-                direction = (Y - yEnd < 0 ? Dir.RIGHT : Dir.LEFT);
-            }
+            // Core of the chosing dir part -> Shortest without collisions / Shortest
+            direction = coreDirShortest();
         }
+        return direction;
+    }
 
-        if (direction != null) {
-            int agentId = sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY());
-            if (agentId != 0 && !waitingForMovement) {
+    public Dir coreDirShortest() {
+        int distX = Math.abs(X - xEnd);
+        int distY = Math.abs(Y - yEnd);
 
-                boiteAuxLettres.envoyerMsg(agentId,
-                        new Message("REQUEST", "MOVE", X + direction.getMoveX(), Y + direction.getMoveY()));
-                waitingForMovement = true;
-                direction = null;
-            }
+        if (distX > distY) {
+            return  (X - xEnd < 0 ? Dir.BOT : Dir.TOP);
+        } else {
+            return (Y - yEnd < 0 ? Dir.RIGHT : Dir.LEFT);
+        }
+    }
+
+    public Dir commandIfNeeded(Dir direction, int propagation) {
+
+        int agentId = sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY());
+        if (agentId != 0 && !waitingForAnswer) {
+
+            boiteAuxLettres.envoyerMsg(agentId,
+                    new Message("REQUEST", "MOVE", id, propagation));
+            waitingForAnswer = true;
+            direction = null;
         }
 
         return direction;

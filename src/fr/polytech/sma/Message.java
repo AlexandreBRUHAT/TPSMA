@@ -4,14 +4,14 @@ public class Message {
 
     private String performatif;
     private String action;
-    private int caseX;
-    private int caseY;
+    private int id;
+    private int propagation;
 
-    public Message(String performatif, String action, int caseX, int caseY) {
+    public Message(String performatif, String action, int id, int propagation) {
         this.performatif = performatif;
         this.action = action;
-        this.caseX = caseX;
-        this.caseY = caseY;
+        this.id = id;
+        this.propagation = propagation;
     }
 
     public String getPerformatif() {
@@ -22,11 +22,11 @@ public class Message {
         return action;
     }
 
-    public int getCaseX() {
-        return caseX;
+    public int getId() {
+        return id;
     }
 
-    public int getCaseY() {
-        return caseY;
+    public int getPropagation() {
+        return propagation;
     }
 }
