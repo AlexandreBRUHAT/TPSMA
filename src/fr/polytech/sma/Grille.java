@@ -2,6 +2,7 @@ package fr.polytech.sma;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Observable;
 
 public class Grille {
 
@@ -40,7 +41,7 @@ public class Grille {
         if(X > -1 && X < Main.gridSize && Y > -1 && Y < Main.gridSize)
             return grille[X][Y];
         else
-            return 0;
+            return -1;
     }
 
     public synchronized void afficherGrille() {
@@ -61,11 +62,16 @@ public class Grille {
                 grille[oldX][oldY] = 0;
                 grille[newX][newY] = id;
                 incCoups();
+                afficherGrille();
                 return true;
             }
         }
 
         return false;
+    }
+
+    public synchronized boolean canMove(int id, int oldX, int oldY, int newX, int newY) {
+        return (oldX > -1 && oldX < Main.gridSize && oldY > -1 && oldY < Main.gridSize && newX > -1 && newX < Main.gridSize && newY > -1 && newY < Main.gridSize) && (grille[newX][newY] == 0 && grille[oldX][oldY] == id);
     }
 
     public synchronized void addAgent(Agent agent) {

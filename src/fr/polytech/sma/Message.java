@@ -5,13 +5,11 @@ public class Message {
     private String performatif;
     private String action;
     private int id;
-    private int propagation;
 
-    public Message(String performatif, String action, int id, int propagation) {
+    public Message(String performatif, String action, int id) {
         this.performatif = performatif;
         this.action = action;
         this.id = id;
-        this.propagation = propagation;
     }
 
     public String getPerformatif() {
@@ -24,9 +22,5 @@ public class Message {
 
     public int getId() {
         return id;
-    }
-
-    public int getPropagation() {
-        return propagation;
     }
 }

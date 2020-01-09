@@ -2,7 +2,10 @@ package fr.polytech.sma;
 
 import javafx.util.Pair;
 import org.omg.CORBA.portable.IndirectionException;
+import sun.font.DelegatingShape;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Agent extends Thread {
@@ -15,9 +18,6 @@ public class Agent extends Thread {
 
     private int id;
 
-    private boolean waitingForAnswer;
-
-
     private Grille sharedGrille;
     private BoiteAuxLettres boiteAuxLettres;
 
@@ -29,8 +29,6 @@ public class Agent extends Thread {
         this.yEnd = yEnd;
 
         this.id = id;
-
-        waitingForAnswer = false;
 
         sharedGrille = Grille.getInstance();
         boiteAuxLettres = BoiteAuxLettres.getInstance();
@@ -48,17 +46,10 @@ public class Agent extends Thread {
             // Communication -> Décision -> Déplacement
             direction = null;
             Message message = boiteAuxLettres.lireMsg(id);
-            int propagation = 0;
 
             if (message != null) {
                 // If message read it
-                Pair<Dir, Integer> pair = interpMessage(message);
-
-                if(pair != null) {
-                    direction = pair.getKey();
-                    propagation = pair.getValue();
-                }
-
+                direction = interpMessage(message);
             } else {
                 // Else chose your own dir
                 direction = choseDir();
@@ -66,13 +57,22 @@ public class Agent extends Thread {
 
             // Command other / propagate
             if (direction != null) {
-                direction = commandIfNeeded(direction, propagation);
+                direction = commandIfNeeded(direction);
             }
 
             // Move if you want to
             if(direction != null) {
                 move(direction);
-                // You moved so you're not waiting anymore and you can send new messages without spamming for nothing
+
+                if(message != null) {
+                    try {
+                        sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    message = null;
+                }
             }
         }
 
@@ -98,14 +98,6 @@ public class Agent extends Thread {
         return Y;
     }
 
-    public int getxEnd() {
-        return xEnd;
-    }
-
-    public int getyEnd() {
-        return yEnd;
-    }
-
     public int getMyId() {
         return id;
     }
@@ -118,15 +110,26 @@ public class Agent extends Thread {
 
      */
 
-    public Pair<Dir, Integer> interpMessage(Message msg) {
-        if (msg.getPerformatif().equals("REQUEST") && msg.getAction().equals("MOVE") && msg.getPropagation() < 5) {
-            boiteAuxLettres.envoyerMsg(msg.getId(),
-                    new Message("ANSWER", "MOVE", id, 0));
-            return new Pair<>(randomDir(), msg.getPropagation());
-        }
-        else if (msg.getPerformatif().equals("ANSWER")) {
-            waitingForAnswer  = false;
-            return null;
+    public Dir interpMessage(Message msg) {
+        if (msg.getPerformatif().equals("REQUEST") && msg.getAction().equals("MOVE")) {
+            Dir direction = coreDirShortest();
+
+            if (sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY()) == -1 || sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY()) == msg.getId()) {
+                List<Dir> list = new ArrayList<>();
+                for(Dir dir: Dir.values()) {
+                    if (sharedGrille.canMove(id, X, Y, X + dir.getMoveX(), Y + dir.getMoveY()) && sharedGrille.getAgentId(X + dir.getMoveX(), Y + dir.getMoveY()) != msg.getId()) {
+                        list.add(dir);
+                    }
+                }
+
+                if (list.size() > 0) {
+                    direction = list.get(new Random().nextInt(list.size()));
+                } else {
+                    direction = randomDir();
+                }
+            }
+
+            return direction;
         }
         else return null;
     }
@@ -135,7 +138,7 @@ public class Agent extends Thread {
 
         Dir direction;
 
-        switch (new Random().nextInt() % 4) {
+        switch (new Random().nextInt(4)) {
             case 0: direction = Dir.BOT;
                 break;
             case 1: direction = Dir.TOP;
@@ -166,22 +169,41 @@ public class Agent extends Thread {
         int distX = Math.abs(X - xEnd);
         int distY = Math.abs(Y - yEnd);
 
+        Dir direction;
+
         if (distX > distY) {
-            return  (X - xEnd < 0 ? Dir.BOT : Dir.TOP);
+            direction =  (X - xEnd < 0 ? Dir.BOT : Dir.TOP);
+            if (!sharedGrille.canMove(id, X, Y, X + direction.getMoveX(), Y + direction.getMoveY()) && distY != 0) {
+                direction = (Y - yEnd < 0 ? Dir.RIGHT : Dir.LEFT);
+            }
         } else {
-            return (Y - yEnd < 0 ? Dir.RIGHT : Dir.LEFT);
+            direction = (Y - yEnd < 0 ? Dir.RIGHT : Dir.LEFT);
+            if (!sharedGrille.canMove(id, X, Y, X + direction.getMoveX(), Y + direction.getMoveY()) && distX != 0) {
+                direction =  (X - xEnd < 0 ? Dir.BOT : Dir.TOP);
+            }
         }
+
+        return direction;
     }
 
-    public Dir commandIfNeeded(Dir direction, int propagation) {
+    public Dir commandIfNeeded(Dir direction) {
 
         int agentId = sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY());
-        if (agentId != 0 && !waitingForAnswer) {
+        if (agentId > 0) {
 
             boiteAuxLettres.envoyerMsg(agentId,
-                    new Message("REQUEST", "MOVE", id, propagation));
-            waitingForAnswer = true;
-            direction = null;
+                    new Message("REQUEST", "MOVE", id));
+
+            int counter = 0;
+            while (counter < 200 && !sharedGrille.canMove(id, X, Y, X + direction.getMoveX(), Y + direction.getMoveY())) {
+                try {
+                    sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                counter +=5;
+            }
         }
 
         return direction;
