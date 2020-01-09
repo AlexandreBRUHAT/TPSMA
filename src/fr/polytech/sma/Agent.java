@@ -114,7 +114,7 @@ public class Agent extends Thread {
         if (msg.getPerformatif().equals("REQUEST") && msg.getAction().equals("MOVE")) {
             Dir direction = coreDirShortest();
 
-            if (sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY()) == -1 || sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY()) == msg.getId()) {
+            if (!sharedGrille.canMove(id, X, Y, X + direction.getMoveX(), Y + direction.getMoveY())) {
                 List<Dir> list = new ArrayList<>();
                 for(Dir dir: Dir.values()) {
                     if (sharedGrille.canMove(id, X, Y, X + dir.getMoveX(), Y + dir.getMoveY()) && sharedGrille.getAgentId(X + dir.getMoveX(), Y + dir.getMoveY()) != msg.getId()) {
@@ -123,9 +123,12 @@ public class Agent extends Thread {
                 }
 
                 if (list.size() > 0) {
-                    direction = list.get(new Random().nextInt(list.size()));
+                    return list.get(new Random().nextInt(list.size()));
                 } else {
-                    direction = randomDir();
+
+                    if (sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY()) == -1 || sharedGrille.getAgentId(X + direction.getMoveX(), Y + direction.getMoveY()) == msg.getId()) {
+                        return randomDir();
+                    }
                 }
             }
 
